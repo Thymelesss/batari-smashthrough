@@ -21,6 +21,7 @@ var brickOffsetTop = 30;
 var brickOffsetLeft = 30;
 var brickX = c * (brickWidth + brickPadding) + brickOffsetLeft;
 var brickY = r * (brickHeight + brickPadding) + brickOffsetTop;
+var score = 0;
 
 var ballColor =
   "#" + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
@@ -67,7 +68,7 @@ function drawBall() {
           alert("wow you suck");
           break;
         case 1:
-          alert("you're bad at this");
+          alert("L");
           break;
         case 2:
           alert("uninstall game");
@@ -131,6 +132,7 @@ function draw() {
   drawBricks();
   drawBall();
   drawPaddle();
+  drawScore();
   collisionDetection();
   x += dx;
   y += dy;
@@ -179,13 +181,25 @@ function collisionDetection() {
         ) {
           dy = -dy;
           b.status = 0;
+          score++;
           ballColor =
             "#" +
             (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6);
+          if (score == brickRowCount * brickColumnCount) {
+            alert("gg ez");
+            document.location.reload();
+            clearInterval(interval);
+          }
         }
       }
     }
   }
+}
+
+function drawScore() {
+  ctx.font = "16px Arial";
+  ctx.fillStyle = "#0095DD";
+  ctx.fillText("Score: " + score, 8, 20);
 }
 
 var interval = setInterval(draw, 10);
